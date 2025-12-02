@@ -15,9 +15,10 @@ import { MarkdownEditor } from 'src/components/MarkdownEditor/MarkdownEditor';
 interface Props {
   node: ViewItem;
   order: number;
+  opacity: number;
 }
 
-export const Node = ({ node, order }: Props) => {
+export const Node = ({ node, order, opacity }: Props) => {
   const modelItem = useModelItem(node.id);
   const { iconComponent } = useIcon(modelItem.icon);
 
@@ -42,7 +43,9 @@ export const Node = ({ node, order }: Props) => {
     <Box
       sx={{
         position: 'absolute',
-        zIndex: order
+        zIndex: order,
+        opacity,
+        transition: 'opacity 0.3s'
       }}
     >
       <Box

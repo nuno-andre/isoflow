@@ -16,9 +16,14 @@ import { useColor } from 'src/hooks/useColor';
 interface Props {
   connector: ReturnType<typeof useScene>['connectors'][0];
   isSelected?: boolean;
+  opacity: number;
 }
 
-export const Connector = ({ connector: _connector, isSelected }: Props) => {
+export const Connector = ({
+  connector: _connector,
+  isSelected,
+  opacity
+}: Props) => {
   const theme = useTheme();
   const color = useColor(_connector.color);
   const { currentView } = useScene();
@@ -36,9 +41,8 @@ export const Connector = ({ connector: _connector, isSelected }: Props) => {
 
   const pathString = useMemo(() => {
     return connector.path.tiles.reduce((acc, tile) => {
-      return `${acc} ${tile.x * UNPROJECTED_TILE_SIZE + drawOffset.x},${
-        tile.y * UNPROJECTED_TILE_SIZE + drawOffset.y
-      }`;
+      return `${acc} ${tile.x * UNPROJECTED_TILE_SIZE + drawOffset.x},${tile.y * UNPROJECTED_TILE_SIZE + drawOffset.y
+        }`;
     }, '');
   }, [connector.path.tiles, drawOffset]);
 
@@ -52,11 +56,11 @@ export const Connector = ({ connector: _connector, isSelected }: Props) => {
         id: anchor.id,
         x:
           (connector.path.rectangle.from.x - position.x) *
-            UNPROJECTED_TILE_SIZE +
+          UNPROJECTED_TILE_SIZE +
           drawOffset.x,
         y:
           (connector.path.rectangle.from.y - position.y) *
-            UNPROJECTED_TILE_SIZE +
+          UNPROJECTED_TILE_SIZE +
           drawOffset.y
       };
     });
@@ -89,7 +93,13 @@ export const Connector = ({ connector: _connector, isSelected }: Props) => {
   }, [connector.style, connectorWidthPx]);
 
   return (
-    <Box style={css}>
+    <Box
+      style={{
+        ...css,
+        opacity,
+        transition: 'opacity 0.3s'
+      }}
+    >
       <Svg
         style={{
           // TODO: The original x coordinates of each tile seems to be calculated wrongly.

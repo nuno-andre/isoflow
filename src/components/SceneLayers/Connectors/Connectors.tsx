@@ -30,11 +30,24 @@ export const Connectors = ({ connectors }: Props) => {
   return (
     <>
       {[...connectors].reverse().map((connector) => {
+        let opacity = 1;
+
+        if (itemControls?.type === 'ITEM') {
+          const isConnected = connector.anchors.find((anchor) => {
+            return anchor.ref.item === itemControls.id;
+          });
+
+          if (!isConnected) {
+            opacity = 0.2;
+          }
+        }
+
         return (
           <Connector
             key={connector.id}
             connector={connector}
             isSelected={selectedConnectorId === connector.id}
+            opacity={opacity}
           />
         );
       })}
